@@ -41,7 +41,7 @@ after having ran `make`. Then run `./math <PROGRAM>`.
 ```shell
 make
 cd build/bin/Interpreters/
-./math ../../../Examples/Fractorial.dali
+echo 20 | ./math ../../../Examples/Fractorial.dali
 ```
 
 ## Examples
