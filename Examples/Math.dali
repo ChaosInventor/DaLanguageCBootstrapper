@@ -1,0 +1,104 @@
+(
+    read, write, greater, add, subtract, multiply, divide,
+    num1, num2, num3, num4, zero, one,
+    brk
+)[return]
+{
+
+    read(num1);
+    read(num2);
+
+    add(num1, num2, num3);
+    write(num3);
+
+    greater(num1, zero)[true: div, false: mul];
+
+    div: divide(num2, num1, num3)[par];
+
+    mul: multiply(num1, num2, num3);
+
+    par: write(num3);
+
+
+    multiply(num1, num2, num3);
+    multiply(num2, num2, num4);
+
+    write(num3);
+    write(num4);
+
+
+    successor: (add, num, result, one)[]
+    {
+        add(num, one, result);
+    }
+
+    successor(num: num3, num4, one, add: add);
+
+    write(num4);
+
+    complex: (num1, num2, num3, add)
+    {
+        motif:(num1, num2, num3, add)
+        {
+            add(num1, num3, num2);
+            add(num1, num3, num3);
+            add(num2, num1, num2);
+            add(num2, num2, num1);
+            add(num2, num3, num3);
+            add(num2, num1, num2);
+            add(num1, num3, num2);
+            add(num3, num2, num3);
+        }
+
+        motif(num1, num2, num3, add);
+        motif(num3, num2, num1, add);
+        motif(num2, num3, num1, add);
+    }
+
+    greaterCaller(greaterPar, zero)[exit];
+
+    TF: (zero, greater)[true, false]
+    {
+        greater(zero, zero)[true: false, false: true];
+    }
+    FF: (zero, greater)[true, false]
+    {
+        greater(zero, zero)[true: true, false: false];
+    }
+    setZeroF: (num, sub)
+    {
+        sub(num, num, num);
+    }
+
+    cont: read(num1)[skip];
+
+    T: TF(greater: greater, zero: zero);
+    F: FF(zero: zero, greater);
+    setZero: setZeroF(sub: subtract);
+
+    greaterPar: greater[false: leap];
+    greaterCaller: (greaterPar, zero) { greaterPar(zero, zero); }
+    leap: read(num1); read(num2); multiply(num1, num2, num2); write(num2)[cont];
+
+    skip: T()[true, exit];
+    true: setZero(num1);
+          write(num1);
+          read(num1);
+    F()[exit, false];
+    false: setZero(num2);
+           write(num2);
+           read(num2);
+
+    greater(num4, zero)[true: loop, false: return];
+
+    loop: greater(num4, zero)[true: inLoop, false: exit];
+    inLoop: subtract(num4, num1, num4);
+    complex(num1, num2, num3, add)[loop];
+
+    exit: write(num1);
+    write(num2);
+    write(num3);
+    write(num4);
+
+}
+

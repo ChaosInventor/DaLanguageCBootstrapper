@@ -1,0 +1,18 @@
+(
+    read, write, greater, add, subtract, multiply, divide,
+    num1, num2, num3, num4, zero, one,
+    brk
+)[return]
+{
+
+    read(num1);
+    subtract(num2, num2, num2);
+    add(num2, one, num2);
+
+    loop: greater(num1, zero)[continue, exit];
+    continue: multiply(num1, num2, num2);
+              subtract(num1, one, num1)[loop];
+
+    exit: write(num2);
+
+}
