@@ -1,0 +1,18 @@
+(
+ mov, eax, ebx, ecx, edx, int, 0x80, stdoutFD, writeSyscall, exitSyscall, 0x0,
+ msg, msgLen
+)
+{
+
+    mov(eax, writeSyscall);
+    mov(ebx, stdoutFD);
+    mov(ecx, msg);
+    mov(edx, msgLen);
+    int(0x80);
+
+    mov(eax, exitSyscall);
+    mov(ebx, 0x0);
+    int(0x80);
+
+}
+
