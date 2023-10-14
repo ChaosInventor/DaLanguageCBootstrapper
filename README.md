@@ -7,13 +7,13 @@ project is still highly unstable and untested.**
 
 ## Building
 
-
 In order to build the current test interpreter that can do basic math, simply
 run `make` in the project directory
 
 ```shell
 make -j
 ```
+
 ### Prerequisites
 
 A working C99 compiler with the standard library along with basic unix utilities:
@@ -51,4 +51,3 @@ Check the `Examples/` directory.
 ## Documentation
 
 WIP, TBA.
-
