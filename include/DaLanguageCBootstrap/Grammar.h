@@ -60,7 +60,7 @@ typedef struct Group
     union
     {
         Term GTerm;
-        Definition GDefinition;
+        List GDefinition; //ListOfPointer of Definition*
     } Data;
 
 } Group;

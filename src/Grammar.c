@@ -254,7 +254,15 @@ void finalizeGroup(Group* group)
     assert(group != NULL);
 
     if(group->Type == GTerm) finalizeTerm(&group->Data.GTerm);
-    else finalizeDefinition(&group->Data.GDefinition);
+    else
+    {
+        iterateListOfPointerForward(group->Data.GDefinition, curNode)
+        {
+            finalizeDefinition((Definition*)curNode->Pointer);
+        }
+
+        finalizeListOfPointer(&group->Data.GDefinition);
+    }
 
     *group = (struct Group){0};
 
