@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <signal.h>
 #include "DaLanguageCBootstrap/InterpretProgram.h"
+#include "DaLanguageCBootstrap/DaLanguageList.h"
 
 char inputChar;
 char outputChar;
@@ -70,13 +71,21 @@ int main(int argc, char* argv[])
 
     SymbolTable protoSymbols = initializeSymbolTableSize(256);
 
+
     addInstructionSymbol(protoSymbols, "inputNext", input, (1, "value"), (2, "more", "end"));
     addInstructionSymbol(protoSymbols, "outputNext", output, (1, "value"), (2, "more", "end"));
 
+    addInstructionSymbol(protoSymbols, "first", DaLanguageListFirst, (1, "list"), (2, "notNull", "null"));
+    addInstructionSymbol(protoSymbols, "last", DaLanguageListLast, (1, "list"), (2, "notNull", "null"));
+    addInstructionSymbol(protoSymbols, "next", DaLanguageListNext, (1, "list"), (2, "more", "end"));
+    addInstructionSymbol(protoSymbols, "prev", DaLanguageListPrev, (1, "list"), (2, "more", "end"));
+
     addInstructionSymbolDefJump(protoSymbols, "copy", copy, (2, "from", "to"));
+
 
     addDataSymbol(protoSymbols, "input", inputChar);
     addDataSymbol(protoSymbols, "output", outputChar);
+
 
     assert(argc > 0);
     if(argc < 2)
