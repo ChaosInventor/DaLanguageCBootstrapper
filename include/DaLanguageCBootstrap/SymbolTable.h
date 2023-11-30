@@ -9,6 +9,10 @@
 #include "DaLanguageCBootstrap/ListOfPointer.h"
 #include "DaLanguageCBootstrap/ListOfPointer.h"
 
+#define addDataSymbol(table, name, var)\
+    ConstString(var ## S, name);\
+    addSymbolTable(&(table), var ## S, createDataSymbol(&(var)));
+
 #define iterateSymbolTableForward(table, sym)\
     iterateListOfStringForward((table).symbolsList, curNode)\
         for(Symbol* sym = *getHashTableKey((table).Table, curNode->Name), *runOnce = (Symbol*)0x1; runOnce != NULL; runOnce = NULL)

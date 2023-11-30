@@ -5,17 +5,6 @@
 #include "DaLanguageCBootstrap/SemanticAnalyzer.h"
 #include "DaLanguageCBootstrap/ListOfString.h"
 
-#define DalInstruction(name) String name(SymbolTable params)
-#define DalValue(name, type)\
-    ConstString(name ## S, #name);\
-    Symbol* name ## Sym = getSymbolTable(params, name ## S);\
-    type* name = (type*)name ## Sym->Data.STData;
-#define DalJump(name) ConstString(name, #name);
-
-#define addDataSymbol(table, name, var)\
-    ConstString(var ## S, name);\
-    addSymbolTable(&(table), var ## S, createDataSymbol(&(var)));
-
 struct InterpreterScope;
 
 typedef enum InterpretationResultType

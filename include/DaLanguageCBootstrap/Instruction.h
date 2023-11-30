@@ -7,6 +7,13 @@
 #include "DaLanguageCBootstrap/ListOfString.h"
 #include "DaLanguageCBootstrap/SymbolTable.h"
 
+#define DalInstruction(name) String name(SymbolTable params)
+#define DalValue(name, type)\
+    ConstString(name ## S, #name);\
+    Symbol* name ## Sym = getSymbolTable(params, name ## S);\
+    type* name = (type*)name ## Sym->Data.STData;
+#define DalJump(name) ConstString(name, #name);
+
 #define addInstructionSymbol(table, name, function, values, jumps)\
     ConstString(function ## S, name);\
     addSymbolTable(\
