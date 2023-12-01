@@ -1,6 +1,7 @@
 #include "DaLanguageCBootstrap/ListOfPointer.h"
 #include <stdlib.h>
 #include <assert.h>
+#include <stdarg.h>
 
 ListOfPointer* allocateListOfPointerNode()
 {
@@ -19,6 +20,25 @@ ListOfPointer* createListOfPointerNode(void* p)
     ListOfPointer* ret = allocateListOfPointerNode();
     *ret = initializeListOfPointerNode(p);
     return ret;
+}
+
+List generateListOfPointer(void* pointer, ...)
+{
+
+    List ret = {0};
+
+    va_list args;
+    va_start(args, pointer);
+
+    void* curPointer = pointer;
+    while(curPointer != NULL)
+    {
+        appendPointerToListOfPointer(curPointer, &ret);
+        curPointer = va_arg(args, void*);
+    }
+
+    return ret;
+
 }
 
 List copyListOfPointer(List list)

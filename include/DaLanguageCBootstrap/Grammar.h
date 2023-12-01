@@ -6,6 +6,45 @@
 #include "DaLanguageCBootstrap/List.h"
 #include "DaLanguageCBootstrap/ListOfPointer.h"
 
+#define ruleEnd NULL
+
+#define grammar(...)\
+    generateListOfPointer(__VA_ARGS__)
+
+#define rule(leftAlterations, rightAlterations)\
+    createRuleFromLeftAlterationsAndRightAlterations(\
+            generateListOfPointer leftAlterations,\
+            generateListOfPointer rightAlterations\
+        )
+
+#define ruleDefinition(groups, lower, upper)\
+    createDefinitionWithGroupsAndRepetition(generateListOfPointer groups, lower, upper)
+#define ruleDefinitionOnce(...)\
+    ruleDefinition((__VA_ARGS__), 1, 1)
+
+#define ruleGroup(...)\
+    createGroupFromDefinitions(generateListOfPointer(__VA_ARGS__))
+
+#define ruleNonterminal(type)\
+    createGroupFromTerm(initializeTermFromNonterminalType(type))
+#define ruleOnlynonterminal(type)\
+    createDefinitionWithGroup(initializeGroupFromTerm(initializeTermFromNonterminalType(type)))
+
+#define ruleNonterminalByName(names, name)\
+    ruleNonterminal(memoizeNonterminalTypeInListOfNamesWithName(names, name))
+#define ruleOnlyNonterminalByName(names, name)\
+    ruleOnlynonterminal(memoizeNonterminalTypeInListOfNamesWithName(names, name))
+
+#define ruleTerminal(terminal)\
+    createGroupFromTerm(initializeTermFromTerminal(terminal))
+#define ruleOnlyTerminal(terminal)\
+    createDefinitionWithGroup(initializeGroupFromTerm(initializeTermFromTerminal(terminal)))
+
+#define ruleOptional(...)\
+    ruleGroup(ruleDefinition((__VA_ARGS__), 0, 1), ruleEnd)
+#define ruleAny(...)\
+    ruleGroup(ruleDefinition((__VA_ARGS__), 0, 0), ruleEnd)
+
 typedef struct Rule
 {
 
@@ -72,23 +111,39 @@ Definition* allocateDefinition();
 Group* allocateGroup();
 
 
+Rule initializeRuleFromLeftAlterationsAndRightAlterations(List left, List right);
+
 Definition initializeDefinition();
+Definition initializeDefinitionWithGroupsAndRepetition(
+    List groups, size_t lower, size_t upper
+);
 Definition initializeDefinitionWithGroup(Group group);
 
 Group initializeGroupFromTerm(Term term);
+Group initializeGroupFromDefinitions(List definitons);
 
 Term initializeTermFromTerminal(char terminal);
 Term initializeTermFromNonterminalType(int type);
 
 
+Rule* createRuleFromLeftAlterationsAndRightAlterations(List left, List right);
+
 Definition* createDefinitionWithGroup(Group group);
+Definition* createDefinitionWithGroupsAndRepetition(
+    List groups, size_t lower, size_t upper
+);
+
 Group* createGroupFromTerm(Term term);
+Group* createGroupFromDefinitions(List definitions);
 
 
 void appendLeftAlternativeToRule(Definition left, Rule* rule);
 void appendRightAlternativeToRule(Definition right, Rule* rule);
 
 void appendGroupToDefinition(Group group, Definition* definition);
+
+
+int memoizeNonterminalTypeInListOfNamesWithName(List* names, const char* name);
 
 
 bool termIsEqualToTerm(Term t1, Term t2);
@@ -118,4 +173,3 @@ void destroyGroup(Group* group);
 void destroyRule(Rule* rule);
 
 #endif //DALCBOOT_GRAMMAR
-

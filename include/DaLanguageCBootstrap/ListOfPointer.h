@@ -39,6 +39,8 @@ ListOfPointer initializeListOfPointerNode(void* p);
 
 ListOfPointer* createListOfPointerNode(void* p);
 
+List generateListOfPointer(void* pointer, ...);
+
 List copyListOfPointer(List list);
 
 void appendPointerToListOfPointer(void* p, List* list);

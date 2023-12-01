@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <stdarg.h>
+#include <string.h>
 
 Rule* allocateRule()
 {
@@ -40,10 +42,29 @@ Group* allocateGroup()
 }
 
 
+Rule initializeRuleFromLeftAlterationsAndRightAlterations(List left, List right)
+{
+
+    Rule ret = {.leftAlterations = left, .rightAlterations = right};
+    return ret;
+
+}
+
 Definition initializeDefinition()
 {
 
     Definition ret = {.lowerRepetition = 1, .upperRepetition = 1};
+    return ret;
+
+}
+Definition initializeDefinitionWithGroupsAndRepetition(
+    List groups, size_t lower, size_t upper
+)
+{
+
+    Definition ret = {
+        .Groups = groups, .lowerRepetition = lower, .upperRepetition = upper
+    };
     return ret;
 
 }
@@ -68,6 +89,13 @@ Group initializeGroupFromTerm(Term term)
     return ret;
 
 }
+Group initializeGroupFromDefinitions(List definitons)
+{
+
+    Group ret = {.Type = GDefinition, .Data.GDefinition = definitons};
+    return ret;
+
+}
 
 Term initializeTermFromTerminal(char terminal)
 {
@@ -85,6 +113,15 @@ Term initializeTermFromNonterminalType(int type)
 }
 
 
+Rule* createRuleFromLeftAlterationsAndRightAlterations(List left, List right)
+{
+
+    Rule* ret = allocateRule();
+    initializeRuleFromLeftAlterationsAndRightAlterations(left, right);
+    return ret;
+
+}
+
 Definition* createDefinitionWithGroup(Group group)
 {
 
@@ -92,6 +129,16 @@ Definition* createDefinitionWithGroup(Group group)
 
     *ret = initializeDefinitionWithGroup(group);
 
+    return ret;
+
+}
+Definition* createDefinitionWithGroupsAndRepetition(
+    List groups, size_t lower, size_t upper
+)
+{
+
+    Definition* ret = allocateDefinition();
+    *ret = initializeDefinitionWithGroupsAndRepetition(groups, lower, upper);
     return ret;
 
 }
@@ -103,6 +150,14 @@ Group* createGroupFromTerm(Term term)
 
     *ret = initializeGroupFromTerm(term);
 
+    return ret;
+
+}
+Group* createGroupFromDefinitions(List definitions)
+{
+
+    Group* ret = allocateGroup();
+    *ret = initializeGroupFromDefinitions(definitions);
     return ret;
 
 }
@@ -137,6 +192,28 @@ void appendGroupToDefinition(Group group, Definition* definition)
     appendPointerToListOfPointer(p, &definition->Groups);
 
 }
+
+
+int memoizeNonterminalTypeInListOfNamesWithName(List* names, const char* name)
+{
+
+    int curType = 0;
+    iterateListOfPointerForward(*names, curName)
+    {
+        if(strcmp((const char*)curName->Pointer, name) == 0)
+        {
+            return curType;
+        }
+
+        ++curType;
+    }
+
+    appendPointerToListOfPointer((char*)name, names);
+
+    return curType;
+
+}
+
 
 
 bool termIsEqualToTerm(Term t1, Term t2)
