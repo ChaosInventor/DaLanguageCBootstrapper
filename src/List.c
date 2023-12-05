@@ -289,10 +289,10 @@ ListNode* listFirst(ListNode* node)
 
     assert(node != NULL);
 
-    ListNode* First;
-    for(First = node; First->Prev != NULL; First = First->Prev);
+    ListNode* first;
+    for(first = node; first->Prev != NULL; first = first->Prev);
 
-    return First;
+    return first;
 
 }
 ListNode* listLast(ListNode* node)
@@ -300,10 +300,10 @@ ListNode* listLast(ListNode* node)
 
     assert(node != NULL);
 
-    ListNode* Last;
-    for(Last = node; Last->Next != NULL; Last = Last->Next);
+    ListNode* last;
+    for(last = node; last->Next != NULL; last = last->Next);
 
-    return Last;
+    return last;
 
 }
 ListNode* listIndex(size_t index, List* list)
@@ -313,7 +313,7 @@ ListNode* listIndex(size_t index, List* list)
     assert(list != NULL);
 
     ListNode* curNode = list->First;
-    for(size_t i = 0; i <= index; ++i)
+    for(size_t i = 0; i < index; ++i)
     {
         assert(curNode != NULL);
         curNode = curNode->Next;
@@ -337,9 +337,9 @@ List listInfer(ListNode* list)
         return infered;
     }
 
-    infered.Count = 0;
+    infered.Count = 1;
     ListNode* curNode = list;
-    while (curNode != NULL)
+    while(curNode->Next != NULL)
     {
         curNode = curNode->Next;
         infered.Count++;
@@ -347,8 +347,8 @@ List listInfer(ListNode* list)
 
     infered.Last = curNode;
 
-    curNode = list->Prev;
-    while(curNode != NULL)
+    curNode = list;
+    while(curNode->Prev != NULL)
     {
         curNode = curNode->Prev;
         infered.Count++;
