@@ -268,22 +268,115 @@ bool termIsIdenticalToTerm(Term t1, Term t2)
 }
 
 
-void printTerm(Term term, FILE* stream)
+void printTermWithNonterminalNames(Term term, FILE* stream, List nonterminalNames)
 {
 
     if(term.Type == GTerminal)
     {
-        putc(term.Data.GTerminal, stream);
+        fprintf(stream, "'%c'", term.Data.GTerminal);
     }
     else
     {
-        fprintf(stream, "%d = { ", term.Data.GNonterminal.nonterminalType);
-        iterateListOfPointerForward(term.Data.GNonterminal.Terms, curNode)
+        assert(term.Data.GNonterminal.nonterminalType >= 0);
+        assert((size_t)term.Data.GNonterminal.nonterminalType < nonterminalNames.Count);
+
+        ListOfPointer* nameNode = (ListOfPointer*)listIndex(
+            (size_t)term.Data.GNonterminal.nonterminalType, &nonterminalNames
+        );
+        fputs((const char*)nameNode->Pointer, stream);
+    }
+
+}
+void printGroupWithNonterminalNames(Group group, FILE* stream, List nonterminalNames)
+{
+
+    if(group.Type == GTerm)
+    {
+        printTermWithNonterminalNames(group.Data.GTerm, stream, nonterminalNames);
+    }
+    else
+    {
+        if(group.Data.GDefinition.Count > 1)
+            fputc('(', stream);
+
+        iterateListOfPointerForward(group.Data.GDefinition, curNode)
         {
-            printTerm(*(Term*)curNode->Pointer, stream);
-            if(curNode->Header.Next != NULL) fputs(", ", stream);
-            else fputs(" }", stream);
+            Definition* definition = (Definition*)curNode->Pointer;
+            printDefinitionWithNonterminalNames(*definition, stream, nonterminalNames);
+
+            if(curNode->Header.Next != NULL)
+            {
+                fputs(" | ", stream);
+            }
         }
+
+        if(group.Data.GDefinition.Count > 1)
+            fputc(')', stream);
+    }
+
+}
+void printDefinitionWithNonterminalNames(Definition definition, FILE* stream, List nonterminalNames)
+{
+
+    if(definition.Groups.Count > 1 && (definition.lowerRepetition != 1 || definition.upperRepetition != 1))
+        fputc('(', stream);
+
+    iterateListOfPointerForward(definition.Groups, curNode)
+    {
+        Group* group = curNode->Pointer;
+        printGroupWithNonterminalNames(*group, stream, nonterminalNames);
+
+        if(curNode->Header.Next != NULL)
+        {
+            fputs(", ", stream);
+        }
+    }
+
+    if(definition.Groups.Count > 1 && (definition.lowerRepetition != 1 || definition.upperRepetition != 1))
+        fputc(')', stream);
+
+    if(definition.lowerRepetition != 1 || definition.upperRepetition != 1)
+        fprintf(stream, " * %zi-%zi", definition.lowerRepetition, definition.upperRepetition);
+
+}
+void printRuleWithNonterminalNames(Rule rule, FILE* stream, List nonterminalNames)
+{
+
+    iterateListOfPointerForward(rule.leftAlterations, curNode)
+    {
+        Definition* definition = (Definition*)curNode->Pointer;
+        printDefinitionWithNonterminalNames(*definition, stream, nonterminalNames);
+
+        if(curNode->Header.Next != NULL)
+        {
+            fputs(" | ", stream);
+        }
+    }
+
+    fputs(" = ", stream);
+
+    iterateListOfPointerForward(rule.rightAlterations, curNode)
+    {
+        Definition* definition = (Definition*)curNode->Pointer;
+        printDefinitionWithNonterminalNames(*definition, stream, nonterminalNames);
+
+        if(curNode->Header.Next != NULL)
+        {
+            fputs(" | ", stream);
+        }
+    }
+
+    fputc(';', stream);
+
+}
+void printGrammarWithNonterminalNames(List grammar, FILE* stream, List nonterminalNames)
+{
+
+    iterateListOfPointerForward(grammar, curNode)
+    {
+        Rule* rule = (Rule*)curNode->Pointer;
+        printRuleWithNonterminalNames(*rule, stream, nonterminalNames);
+        fputc('\n', stream);
     }
 
 }

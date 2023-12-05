@@ -150,7 +150,11 @@ bool termIsEqualToTerm(Term t1, Term t2);
 bool termIsIdenticalToTerm(Term t1, Term t2);
 
 
-void printTerm(Term term, FILE* stream);
+void printTermWithNonterminalNames(Term term, FILE* stream, List nonterminalNames);
+void printGroupWithNonterminalNames(Group group, FILE* stream, List nonterminalNames);
+void printDefinitionWithNonterminalNames(Definition definition, FILE* stream, List nonterminalNames);
+void printRuleWithNonterminalNames(Rule rule, FILE* stream, List nonterminalNames);
+void printGrammarWithNonterminalNames(List grammar, FILE* stream, List nonterminalNames);
 
 
 const char* groupTypeToCString(GroupType type);
