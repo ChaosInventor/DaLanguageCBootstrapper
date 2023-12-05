@@ -117,7 +117,7 @@ Rule* createRuleFromLeftAlterationsAndRightAlterations(List left, List right)
 {
 
     Rule* ret = allocateRule();
-    initializeRuleFromLeftAlterationsAndRightAlterations(left, right);
+    *ret = initializeRuleFromLeftAlterationsAndRightAlterations(left, right);
     return ret;
 
 }
