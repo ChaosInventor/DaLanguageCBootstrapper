@@ -5,6 +5,7 @@
 #include <signal.h>
 #include "DaLanguageCBootstrap/InterpretProgram.h"
 #include "DaLanguageCBootstrap/DaLanguageList.h"
+#include "DaLanguageCBootstrap/Grammar.h"
 
 char inputChar;
 char outputChar;
@@ -69,6 +70,16 @@ static void destroySymbolVoid(void* sym)
 int main(int argc, char* argv[])
 {
 
+    //Ugly macro DSL file. Contains starter grammar in a `ListOfPointer` of
+    //`Rule` called `grammar`. Non-terminal types have their names assigned in a
+    //`ListOfPointer` of `const char*` called `names`. The `nonterminalType` of
+    //each term is used to index this list. The node at the index's pointer
+    //points to a C string containing the name.
+    #include "DaLanguageCBootstrapConstants/protoGrammar.c"
+
+    fputs("Starter grammar for proto is:\n", stderr);
+    printGrammarWithNonterminalNames(grammar, stderr, names);
+
     SymbolTable protoSymbols = initializeSymbolTableSize(256);
 
 
@@ -85,6 +96,7 @@ int main(int argc, char* argv[])
 
     addDataSymbol(protoSymbols, "input", inputChar);
     addDataSymbol(protoSymbols, "output", outputChar);
+    addDataSymbol(protoSymbols, "grammar", grammar);
 
 
     assert(argc > 0);
@@ -109,6 +121,8 @@ int main(int argc, char* argv[])
     }
 
     finalizeSymbolTable(&protoSymbols, destroySymbolVoid);
+    finalizeGrammar(&grammar);
+    finalizeListOfPointer(&names);
 
     return 0;
 
