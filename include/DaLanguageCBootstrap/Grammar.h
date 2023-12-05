@@ -169,6 +169,8 @@ void finalizeDefinition(Definition* def);
 
 void finalizeRule(Rule* rule);
 
+void finalizeGrammar(List* rules);
+
 
 void destroyDefinition(Definition* definition);
 

@@ -481,6 +481,20 @@ void finalizeRule(Rule* rule)
 
 }
 
+void finalizeGrammar(List* rules)
+{
+
+    assert(rules != NULL);
+
+    iterateListOfPointerForward(*rules, curNode)
+    {
+        destroyRule((Rule*)curNode->Pointer);
+    }
+
+    finalizeListOfPointer(rules);
+
+}
+
 
 void destroyDefinition(Definition* definition)
 {
