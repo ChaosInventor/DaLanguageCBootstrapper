@@ -428,7 +428,7 @@ void finalizeGroup(Group* group)
     {
         iterateListOfPointerForward(group->Data.GDefinition, curNode)
         {
-            finalizeDefinition((Definition*)curNode->Pointer);
+            destroyDefinition((Definition*)curNode->Pointer);
         }
 
         finalizeListOfPointer(&group->Data.GDefinition);
