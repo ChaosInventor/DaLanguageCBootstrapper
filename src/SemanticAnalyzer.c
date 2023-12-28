@@ -1213,7 +1213,7 @@ void finalizeSemanticAnalysisResult(SemanticAnalysisResult* result)
 
     iterateListOfPointerForward(result->Errors, curNode)
     {
-        finalizeSemanticAnalysisError((SemanticAnalysisError*)curNode->Pointer);
+        destroySemanticAnalysisError((SemanticAnalysisError*)curNode->Pointer);
     }
 
     finalizeListOfPointer(&result->Errors);
