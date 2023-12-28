@@ -277,6 +277,7 @@ void listMerge(List* from, List* to)
     {
         to->Last->Next = from->First;
         from->First->Prev = to->Last;
+        to->Last  = from->Last;
         to->Count += from->Count;
     }
 
