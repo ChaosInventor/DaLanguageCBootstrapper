@@ -1,5 +1,5 @@
-#ifndef DALANGUAGE_LIST
-#define DALANGUAGE_LIST
+#ifndef DALCBOOT_DALANGUAGE_LIST
+#define DALCBOOT_DALANGUAGE_LIST
 
 #include "DaLanguageCBootstrap/List.h"
 #include "DaLanguageCBootstrap/Instruction.h"
@@ -7,7 +7,7 @@
 typedef struct DaLanguageList
 {
 
-    List list;
+    List List;
     ListNode* curNode;
 
 } DaLanguageList;
@@ -17,4 +17,4 @@ DalInstruction(DaLanguageListPrev);
 DalInstruction(DaLanguageListFirst);
 DalInstruction(DaLanguageListLast);
 
-#endif //DALANGUAGE_LIST
+#endif //DALCBOOT_DALANGUAGE_LIST

@@ -27,7 +27,7 @@ DalInstruction(DaLanguageListPrev)
     if(dList->curNode == NULL) return end;
     else
     {
-        RetreatListNodeType(dList->curNode, ListNode*, Next);
+        RetreatListNodeType(dList->curNode, ListNode*, Prev);
 
         if(dList->curNode == NULL) return end;
         else return more;
@@ -41,7 +41,7 @@ DalInstruction(DaLanguageListFirst)
     DalJump(notNull);
     DalJump(null);
 
-    dList->curNode = dList->list.First;
+    dList->curNode = dList->List.First;
 
     if(dList->curNode == NULL) return null;
     else return notNull;
@@ -54,7 +54,7 @@ DalInstruction(DaLanguageListLast)
     DalJump(notNull);
     DalJump(null);
 
-    dList->curNode = dList->list.Last;
+    dList->curNode = dList->List.Last;
 
     if(dList->curNode == NULL) return null;
     else return notNull;
