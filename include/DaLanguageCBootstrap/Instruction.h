@@ -57,4 +57,3 @@ void finalizeInstruction(Instruction* inst);
 void destroyInstruction(Instruction* inst);
 
 #endif //DALCBOOT_INSTRUCTION
-
