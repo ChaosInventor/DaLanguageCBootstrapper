@@ -2,27 +2,32 @@
 #define DALCBOOT_INSTRUCTION
 
 #include <stdio.h>
+#include <assert.h>
 #include "DaLanguageCBootstrap/List.h"
 #include "DaLanguageCBootstrap/String.h"
 #include "DaLanguageCBootstrap/ListOfString.h"
 #include "DaLanguageCBootstrap/SymbolTable.h"
 
 #define DalInstruction(name) String name(SymbolTable params)
-#define DalValue(name, type)\
+#define DalSymbol(name, suffix)\
     ConstString(name ## S, #name);\
-    Symbol* name ## Sym = getSymbolTable(params, name ## S);\
+    Symbol* name ## suffix = getSymbolTable(params, name ## S);\
+    assert(name ## suffix !=  NULL);
+#define DalValue(name, type)\
+    DalSymbol(name, Sym);\
+    assert(name ## Sym->Type == STData);\
     type* name = (type*)name ## Sym->Data.STData;
 #define DalJump(name) ConstString(name, #name);
 
 #define addInstructionSymbol(table, name, function, values, jumps)\
     ConstString(function ## S, name);\
-    addSymbolTable(\
+    assert(addSymbolTable(\
             &(table), function ## S,\
             createInstructionSymbol(createInstruction(\
                     function, generateListOfString values,\
                     generateListOfString jumps)\
                     )\
-            );
+            ) == NULL);
 #define addInstructionSymbolDefJump(table, name, function, values)\
     addInstructionSymbol(table, name, function, values, (1, "next"))
 
