@@ -113,7 +113,7 @@ void resolveNextSpec(InterpreterScope* scope, String nextJump)
                 }
 
                 if(!owning) scope->Next = NULL;
-                
+
                 if(scope->Next != NULL) break;
             }
 
@@ -144,7 +144,6 @@ void resolveNextSpec(InterpreterScope* scope, String nextJump)
     scope->nextName = nextJump;
 
 }
-
 void runInterpreter(InterpreterContext* context)
 {
     while(stepInterpreter(context));
