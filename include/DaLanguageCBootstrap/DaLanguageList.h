@@ -12,9 +12,20 @@ typedef struct DaLanguageList
 
 } DaLanguageList;
 
+DalInstruction(DaLanguageListCreate);
+
 DalInstruction(DaLanguageListNext);
 DalInstruction(DaLanguageListPrev);
 DalInstruction(DaLanguageListFirst);
 DalInstruction(DaLanguageListLast);
+
+DalInstruction(DaLanguageListSuffix);
+DalInstruction(DaLanguageListPrefix);
+
+DalInstruction(DaLanguageListUnsuffix);
+DalInstruction(DaLanguageListUnprefix);
+DalInstruction(DaLanguageListExtract);
+
+DalInstruction(DaLanguageListDestroy);
 
 #endif //DALCBOOT_DALANGUAGE_LIST
