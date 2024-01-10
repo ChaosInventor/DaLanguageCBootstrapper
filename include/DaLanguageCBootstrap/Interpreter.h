@@ -4,6 +4,7 @@
 #include "DaLanguageCBootstrap/Stack.h"
 #include "DaLanguageCBootstrap/SemanticAnalyzer.h"
 #include "DaLanguageCBootstrap/ListOfString.h"
+#include <stdio.h>
 
 struct InterpreterScope;
 
@@ -54,6 +55,8 @@ InterpreterScope* createInterpreterScope(SemanticDef* def);
 void runInterpreter(InterpreterContext* context);
 bool bigStepInterpreter(InterpreterContext* context);
 bool stepInterpreter(InterpreterContext* context);
+
+void printInterpretationResult(InterpretationResult result, FILE* stream);
 
 void finalizeInterpreter(InterpreterContext* context);
 

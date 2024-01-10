@@ -305,6 +305,30 @@ bool stepInterpreter(InterpreterContext* context)
 
 }
 
+void printInterpretationResult(InterpretationResult result, FILE* stream)
+{
+
+    switch(result.Type)
+    {
+        case IRunning:
+            {
+                fputs("Interpreter is still running \n", stream);
+            } break;
+        case ISuccessful:
+            {
+                fputs("Interpretation successful with result `", stream);
+                writeString(result.Data.ISuccessful.Jump, stream);
+                fputs("`.\n", stream);
+            } break;
+        case IESemantic:
+            {
+                fputs("Interpreter ran into semantic errors. Printing:\n", stream);
+                printSemanticAnalysisResult(result.Data.IESemantic.semanticsResult, stream);
+            } break;
+    }
+
+}
+
 void finalizeInterpreter(InterpreterContext* context)
 {
 
