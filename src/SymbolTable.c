@@ -291,8 +291,8 @@ void finalizeSymbol(Symbol* sym)
 
     switch(sym->Type)
     {
-        case STDef: destroySemanticDef(sym->Data.STDef); break;
-        case STSpec: destroySemanticSpec(sym->Data.STSpec); break;
+        case STDef: if(sym->Data.STDef != NULL) destroySemanticDef(sym->Data.STDef); break;
+        case STSpec: if(sym->Data.STSpec != NULL) destroySemanticSpec(sym->Data.STSpec); break;
         case STJump: finalizeString(&sym->Data.STJump.Name); break;
         case STInstruction: destroyInstruction(sym->Data.STInstruction); break;
         default: break;
