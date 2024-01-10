@@ -647,7 +647,8 @@ SemanticAnalysisResult resolveSemanticDefSymbols(
         if(sym == NULL)
         {
             addError(ret, createMissingSymbolErrorDef(value->Name, SAValueList, *def));
-            continue;
+            if(value == def->valuesEnd) break;
+            else continue;
         }
 
         *getSymbolTable(def->Symbols, value->Name) = cloneSymbol(*sym);
@@ -1134,6 +1135,8 @@ void finalizeSemanticDef(SemanticDef* def)
 {
 
     assert(def != NULL);
+
+    if(def->Symbols.Table.BufferSize == 0) return;
 
     ListOfString* valuesStart = (ListOfString*)def->Symbols.symbolsList.First;
     ListOfString* jumpsStart = NULL;
